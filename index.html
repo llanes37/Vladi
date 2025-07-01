@@ -1,62 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <title>Formulario de vlady</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ImgSocial - Mini Red Social</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- AOS Animations CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card-img-top {
+      object-fit: cover;
+      height: 200px;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #007bff;
+    }
+    .footer {
+      background-color: #343a40;
+      color: #fff;
+      padding: 20px 0;
+    }
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
-    <h1 class="m-3 text-center">Formulario</h1>
-    <form class="mx-auto">
-        <div class="border-bottom border-secondary mx-3"></div>
-        <div class="input-group-lg container-fluid my-4">
-            <input type="text" class="form-control" aria-label="Sizing example input" placeholder="nombre">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">📷 ImgSocial</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Explorar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Perfil</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main gallery -->
+  <main class="container my-5">
+    <div class="row g-4">
+      <!-- Imagen 1 -->
+      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up">
+        <div class="card">
+          <img src="https://picsum.photos/id/1015/400/300" class="card-img-top" alt="Paisaje 1">
+          <div class="card-body">
+            <h5 class="card-title">Atardecer en la montaña</h5>
+            <p class="card-text">Una vista hermosa desde la cima del valle. #naturaleza</p>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1015/800/600">Ver</button>
+          </div>
         </div>
-
-        <div class="input-group container-fluid mb-4">
-            <input type="text" class="form-control" placeholder="nombre de usuario" aria-label="nombre de usuario">
-            <span class="input-group-text">@gmail.com</span>
+      </div>
+      <!-- Imagen 2 -->
+      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="card">
+          <img src="https://picsum.photos/id/1020/400/300" class="card-img-top" alt="Ciudad">
+          <div class="card-body">
+            <h5 class="card-title">Luces de la ciudad</h5>
+            <p class="card-text">La vida urbana nunca duerme. #ciudad #nocturno</p>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1020/800/600">Ver</button>
+          </div>
         </div>
-
-        <div class="container-fluid mb-4">
-            <input type="password" class="form-control" placeholder="contraseña" aria-label="entrada de contraseña">
+      </div>
+      <!-- Más imágenes de ejemplo -->
+      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="card">
+          <img src="https://picsum.photos/id/1024/400/300" class="card-img-top" alt="Perro">
+          <div class="card-body">
+            <h5 class="card-title">Amigo fiel</h5>
+            <p class="card-text">Siempre esperándote con alegría. #mascotas</p>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1024/800/600">Ver</button>
+          </div>
         </div>
-
-        <div class="container-fluid">
-            <input type="submit" id="button" class="btn btn-light"></input>
+      </div>
+      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+        <div class="card">
+          <img src="https://picsum.photos/id/1035/400/300" class="card-img-top" alt="Playa">
+          <div class="card-body">
+            <h5 class="card-title">Día de playa</h5>
+            <p class="card-text">El sonido del mar y la brisa salada. #verano</p>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1035/800/600">Ver</button>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+  </main>
 
-    <style>
-        html {
-            width: 100%;
-            height: 100%;
-        }
+  <!-- Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <img id="modalImg" src="" class="img-fluid rounded" alt="Imagen ampliada" />
+      </div>
+    </div>
+  </div>
 
-        body {
-            background: linear-gradient(to bottom, #ddf9ff, #6b8388);
-        }
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 ImgSocial. Todos los derechos reservados.</p>
+      <p>
+        <a href="#">Términos</a> |
+        <a href="#">Privacidad</a> |
+        <a href="#">Contacto</a>
+      </p>
+    </div>
+  </footer>
 
-        @media (min-width: 600px) {
-            form {
-                width: 16cm;
-            }
-        }
-    </style>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 600, once: true });
 
-    <script>
-        // Selecciona el botón por su ID
-        var boton = document.getElementById("button");
-
-        // Función que se ejecutará al hacer clic en el botón
-        function botonClick(event) {
-            event.preventDefault(); // Evita que el formulario se envíe
-            alert("hola");
-        }
-
-        // Agrega el evento de clic al botón
-        boton.addEventListener("click", botonClick);
-    </script>
+    const imageModal = document.getElementById('imageModal');
+    imageModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget;
+      const src = button.getAttribute('data-img');
+      const img = imageModal.querySelector('#modalImg');
+      img.src = src;
+    });
+  </script>
 </body>
 </html>
