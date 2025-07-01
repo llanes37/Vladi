@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=enable" />
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center fs-1 my-3">Gestión web</h1>
+        
+        <div id="card" class="container-sm border border-primary text-center p-3">
+            <h2 class="my-2">Administra servidores y dispositivos</h2>
+            <div class="container-fluid d-flex justify-content-center pb-4">
+
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Servidores
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="container-fluid mb-1" id="servers"></div>
+                                <div class="d-flex">
+                                    <button id="button1" class="btn btn-primary w-100 mx-1">Añadir</button>
+                                    <button id="button2" class="btn btn-danger w-100 mx-1">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Dispositivos
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div class="container-fluid mb-1" id="devices"></div>
+                                <div class="d-flex">
+                                    <button id="button3" class="btn btn-primary w-100 mx-1">Añadir</button>
+                                    <button id="button4" class="btn btn-danger w-100 mx-1">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            let servers = []
+            let devices = []
+
+            let serverListItemsState = []
+            let deviceListItemsState = []
+
+            const actualServers = document.getElementById("servers")
+            const actualDevices = document.getElementById("devices")
+
+            function refreshServers() {
+                actualServers.innerHTML = ""
+                for (i in servers) {
+                    actualServers.innerHTML += 
+                    `<div class="btn-group mb-3 w-100 border border-primary listItem1">
+                        <label class="fs-3 p-0 w-100 btn-secondary">
+                            ${servers[i]}
+                        </label>
+
+                        <button class="btn btn-info material-symbols-outlined" onclick="invertServerState(${i})">
+                            enable
+                        </button>
+                    </div>`
+                    applyServerState(i)
+                }
+            }
+
+            function refreshDevices() {
+                actualDevices.innerHTML = ""
+                for (i in devices) {
+                    actualDevices.innerHTML +=
+                    `<div class="btn-group mb-3 w-100 border border-primary listItem2">
+                        <label class="fs-3 p-0 w-100 btn-secondary">
+                            ${devices[i]}
+                        </label>
+
+                        <button class="btn btn-info material-symbols-outlined" onclick="invertDeviceState(${i})">
+                            enable
+                        </button>
+                    </div>`
+                    applyDeviceState(i)
+                }
+            }
+
+            function addServer() {
+                let input = prompt("Introduce el nombre del servidor")
+
+                if (input.length < 15) {
+                    if (input) {
+                        servers.push(input)
+                        refreshServers()
+
+                        let lastItem1 = document.querySelector('.listItem1:last-child')
+                        let lastItem2 = document.getElementById("servers")
+                        lastItem2.style.setProperty('--initial-height', (lastItem2.offsetHeight) + 'px')
+                        lastItem1.classList.add('hideElement');
+                        lastItem2.classList.add('showList');
+                        lastItem1.addEventListener('animationend', () => {
+                            lastItem1.classList.remove('hideElement')
+                            lastItem2.classList.remove('showList')
+                        })
+                    }
+                }
+                else {
+                    alert("El nombre del servidor es demasiado largo")
+                }
+            }
+
+            function removeServer() {
+                if (actualServers.innerHTML) {
+                    let lastItem1 = document.querySelector('.listItem1:last-child')
+                    let lastItem2 = document.getElementById("servers")
+                    lastItem2.style.setProperty('--initial-height', (lastItem2.offsetHeight) + 'px')
+                    lastItem1.classList.add('showElement');
+                    lastItem2.classList.add('hideList');
+                    lastItem1.addEventListener('animationend', () => {
+                        lastItem1.classList.remove('showElement')
+                        lastItem2.classList.remove('hideList')
+
+                        let serverName = servers.pop()
+                        refreshServers()
+
+                        serverListItemsState.pop()
+
+                        alert(`Se ha eliminado el servidor ${serverName}`)
+                    })
+                }
+                else {
+                    alert("No hay servidores que eliminar")
+                }
+            }
+
+            function addDevice() {
+                let input = prompt("Introduce el nombre del servidor")
+
+                if (input.length < 15) {
+                    if (input) {
+                        devices.push(input)
+                        refreshDevices()
+
+                        let lastItem1 = document.querySelector('.listItem2:last-child')
+                        let lastItem2 = document.getElementById("devices")
+                        lastItem2.style.setProperty('--initial-height', (lastItem2.offsetHeight) + 'px')
+                        lastItem1.classList.add('hideElement');
+                        lastItem2.classList.add('showList');
+                        lastItem1.addEventListener('animationend', () => {
+                            lastItem1.classList.remove('hideElement')
+                            lastItem2.classList.remove('showList')
+                        })
+                    }
+                }
+                else {
+                    alert("El nombre del dispositivo es demasiado largo")
+                }
+            }
+
+            function removeDevice() {
+                if (actualDevices.innerHTML) {
+                    let lastItem1 = document.querySelector('.listItem2:last-child')
+                    let lastItem2 = document.getElementById("devices")
+                    lastItem2.style.setProperty('--initial-height', (lastItem2.offsetHeight) + 'px')
+                    lastItem1.classList.add('showElement');
+                    lastItem2.classList.add('hideList');
+                    lastItem1.addEventListener('animationend', () => {
+                        lastItem1.classList.remove('showElement')
+                        lastItem2.classList.remove('hideList')
+
+                        let deviceName = devices.pop()
+                        refreshDevices()
+
+                        deviceListItemsState.pop()
+
+                        alert(`Se ha eliminado el dispositivo ${deviceName}`)
+                    })
+                }
+                else {
+                    alert("No hay dispositivos que eliminar")
+                }
+            }
+
+            function invertServerState(element) {
+                serverListItemsState[element] = !serverListItemsState[element]
+                if (serverListItemsState[element]) {
+                    let server = actualServers.getElementsByClassName("listItem1")[element]
+                    server.getElementsByTagName("label")[0].classList.add('disabled')
+                }
+                else {
+                    let server = actualServers.getElementsByClassName("listItem1")[element]
+                    server.getElementsByTagName("label")[0].classList.remove("disabled")
+                }
+            }
+
+            function applyServerState(element) {
+                if (serverListItemsState[element]) {
+                    let server = actualServers.getElementsByClassName("listItem1")[element]
+                    server.getElementsByTagName("label")[0].classList.add('disabled')
+                }
+                else {
+                    let server = actualServers.getElementsByClassName("listItem1")[element]
+                    server.getElementsByTagName("label")[0].classList.remove("disabled")
+                }
+
+            }
+
+            function invertDeviceState(element) {
+                deviceListItemsState[element] = !deviceListItemsState[element]
+                if (deviceListItemsState[element]) {
+                    let device = actualDevices.getElementsByClassName("listItem2")[element]
+                    device.getElementsByTagName("label")[0].classList.add('disabled')
+                }
+                else {
+                    let device = actualDevices.getElementsByClassName("listItem2")[element]
+                    device.getElementsByTagName("label")[0].classList.remove("disabled")
+                }
+            }
+
+            function applyDeviceState(element) {
+                if (deviceListItemsState[element]) {
+                    let device = actualDevices.getElementsByClassName("listItem2")[element]
+                    device.getElementsByTagName("label")[0].classList.add('disabled')
+                }
+                else {
+                    let device = actualDevices.getElementsByClassName("listItem2")[element]
+                    device.getElementsByTagName("label")[0].classList.remove("disabled")
+                }
+
+            }
+
+            const button1 = document.getElementById("button1")
+            button1.onclick = addServer
+
+            const button2 = document.getElementById("button2")
+            button2.onclick = removeServer
+
+            const button3 = document.getElementById("button3")
+            button3.onclick = addDevice
+
+            const button4 = document.getElementById("button4")
+            button4.onclick = removeDevice
+
+        </script>
+
+        <style>
+            h2 {
+                font-family: sans-serif;
+                font-size: 1.5em;
+            }
+
+            #card {
+                border-radius: 10px;
+                max-width: 550px;
+                box-shadow: 0 0 10px #aaa;
+            }
+
+            .btn-secondary {
+                background-color: #6ad0e2;
+            }
+
+            .disabled {
+                background-color: #5ebaca;
+            }
+
+            .accordion {
+                width: 11.5cm;
+            }
+
+            .accordion-button {
+                z-index: 1;
+            }
+
+            .listItem1:nth-last-child(2), .listItem2:nth-last-child(2) {
+                z-index: 1;
+            }
+
+            .showList {
+                animation: showListAnimation 0.5s
+            }
+
+            .hideList {
+                animation: hideListAnimation 0.5s
+            }
+
+            .hideElement {
+                animation: showElementAnimation 0.5s
+            }
+
+            .showElement {
+                animation: hideElementAnimation 0.5s
+            }
+
+            @keyframes showElementAnimation {
+                0% {
+                    position: relative;
+                    z-index: 0;
+                    top: -62px;
+                }
+
+                100% {
+                    position: relative;
+                    top: 0;
+                }
+            }
+
+            @keyframes hideElementAnimation {
+                0% {
+                    position: relative;
+                    z-index: 0;
+                    top: 0;
+                }
+
+                100% {
+                    position: relative;
+                    top: -62px;
+                }
+            }
+
+            @keyframes showListAnimation {
+                0% {
+                    height: calc(var(--initial-height) - 62px);
+                }
+                100% {
+                    height: var(--initial-height);
+                }
+            }
+
+            @keyframes hideListAnimation {
+                0% {
+                    height: var(--initial-height);
+                }
+                100% {
+                    height: calc(var(--initial-height) - 62px);
+                }
+            }
+        </style>
+</body>
+</html>

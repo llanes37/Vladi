@@ -72,6 +72,14 @@
                 alert("Por favor, introduce un nombre de mascota.");
             }
             */
+
+            const entrada = document.getElementById("equipo").value
+
+            if (entrada) {
+                equipos.push(entrada)
+                mostrarEquipos()
+                document.getElementById("equipo").value = ""
+            }
         }
 
         // Función para mostrar la lista de equipos
@@ -93,6 +101,13 @@
                 lista.innerHTML += mascotaItem;  // Agregar elemento a la lista HTML
             });
             */
+
+            lista = document.getElementById("lista-equipos")
+            lista.innerHTML = ""
+
+            for (i of equipos) {
+                lista.innerHTML += `<li>${i}</li>`
+            }
         }
 
         // Función para eliminar el último equipo de la lista
@@ -113,6 +128,14 @@
                 alert("La lista de mascotas está vacía.");
             }
             */
+           if (equipos.length > 0) {
+            mensaje = equipos.pop()
+            mostrarEquipos()
+            alert(`Se ha eliminado el equipo ${mensaje}`)
+           }
+           else {
+            alert("No hay equipos que eliminar")
+           }
         }
     </script>
 </body>
