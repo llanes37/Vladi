@@ -34,6 +34,15 @@
     .footer a:hover {
       color: #fff;
     }
+
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
   </style>
 </head>
 <body>
@@ -55,6 +64,10 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Perfil</a>
           </li>
+          <!-- Agrega esto en la navbar, dentro de <ul class="navbar-nav ms-auto"> -->
+          <li class="nav-item">
+            <button class="btn btn-outline-light btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#createModal">+ Crear</button>
+          </li>
         </ul>
       </div>
     </div>
@@ -62,58 +75,125 @@
 
   <!-- Main gallery -->
   <main class="container my-5">
-    <div class="row g-4">
+    <div class="d-flex overflow-auto gap-3 pb-3" style="scroll-snap-type: x mandatory;">
       <!-- Imagen 1 -->
-      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up">
-        <div class="card">
-          <img src="https://picsum.photos/id/1015/400/300" class="card-img-top" alt="Paisaje 1">
-          <div class="card-body">
-            <h5 class="card-title">Atardecer en la montaña</h5>
-            <p class="card-text">Una vista hermosa desde la cima del valle. #naturaleza</p>
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1015/800/600">Ver</button>
+      <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up">
+        <img src="https://picsum.photos/id/1015/400/300" class="card-img-top" alt="Paisaje 1">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">Atardecer en la montaña</h5>
+          <p class="card-text">Una vista hermosa desde la cima del valle. #naturaleza</p>
+          <div class="mt-auto text-center">
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+              data-img="https://picsum.photos/id/1015/800/600">Ver</button>
           </div>
         </div>
       </div>
-      <!-- Imagen 2 -->
-      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-        <div class="card">
-          <img src="https://picsum.photos/id/1020/400/300" class="card-img-top" alt="Ciudad">
-          <div class="card-body">
-            <h5 class="card-title">Luces de la ciudad</h5>
-            <p class="card-text">La vida urbana nunca duerme. #ciudad #nocturno</p>
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1020/800/600">Ver</button>
-          </div>
-        </div>
-      </div>
-      <!-- Más imágenes de ejemplo -->
-      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-        <div class="card">
-          <img src="https://picsum.photos/id/1024/400/300" class="card-img-top" alt="Perro">
-          <div class="card-body">
-            <h5 class="card-title">Amigo fiel</h5>
-            <p class="card-text">Siempre esperándote con alegría. #mascotas</p>
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1024/800/600">Ver</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-        <div class="card">
-          <img src="https://picsum.photos/id/1035/400/300" class="card-img-top" alt="Playa">
-          <div class="card-body">
-            <h5 class="card-title">Día de playa</h5>
-            <p class="card-text">El sonido del mar y la brisa salada. #verano</p>
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://picsum.photos/id/1035/800/600">Ver</button>
-          </div>
-        </div>
+      
+
+  <!-- Imagen 2 -->
+  <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up" data-aos-delay="100">
+    <img src="https://picsum.photos/id/1020/400/300" class="card-img-top" alt="Ciudad">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">Luces de la ciudad</h5>
+      <p class="card-text">La vida urbana nunca duerme. #ciudad #nocturno</p>
+      <div class="mt-auto text-center">
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+          data-img="https://picsum.photos/id/1020/800/600">Ver</button>
       </div>
     </div>
+  </div>
+
+  <!-- Imagen 3 -->
+  <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up" data-aos-delay="200">
+    <img src="https://picsum.photos/id/1024/400/300" class="card-img-top" alt="Perro">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">Amigo fiel</h5>
+      <p class="card-text">Siempre esperándote con alegría. #mascotas</p>
+      <div class="mt-auto text-center">
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+          data-img="https://picsum.photos/id/1024/800/600">Ver</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen 4 -->
+  <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up" data-aos-delay="200">
+    <img src="https://picsum.photos/id/1024/400/300" class="card-img-top" alt="Perro">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">Amigo fiel</h5>
+      <p class="card-text">Siempre esperándote con alegría. #mascotas</p>
+      <div class="mt-auto text-center">
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+          data-img="https://picsum.photos/id/1024/800/600">Ver</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen 5 -->
+  <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up" data-aos-delay="300">
+    <img src="https://picsum.photos/id/1035/400/300" class="card-img-top" alt="Playa">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">Día de playa</h5>
+      <p class="card-text">El sonido del mar y la brisa salada. #verano</p>
+      <div class="mt-auto text-center">
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+          data-img="https://picsum.photos/id/1035/800/600">Ver</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen 6 -->
+  <div class="card d-flex flex-column justify-content-between" style="min-width: 16.5%;" data-aos="fade-up" data-aos-delay="400">
+    <img src="https://picsum.photos/id/1040/400/300" class="card-img-top" alt="Campo">
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title">Naturaleza viva</h5>
+      <p class="card-text">Paz entre árboles y flores. #campo</p>
+      <div class="mt-auto text-center">
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal"
+          data-img="https://picsum.photos/id/1040/800/600">Ver</button>
+      </div>
+    </div>
+  </div>
+
   </main>
+
 
   <!-- Modal -->
   <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <img id="modalImg" src="" class="img-fluid rounded" alt="Imagen ampliada" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para crear nueva imagen -->
+  <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="createForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Nueva publicación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="imgUrl" class="form-label">URL de la imagen</label>
+              <input type="url" class="form-control" id="imgUrl" required placeholder="https://...">
+            </div>
+            <div class="mb-3">
+              <label for="imgTitle" class="form-label">Título</label>
+              <input type="text" class="form-control" id="imgTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="imgDesc" class="form-label">Descripción</label>
+              <textarea class="form-control" id="imgDesc" rows="2" required></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Publicar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -135,7 +215,7 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 600, once: true });
-
+  
     const imageModal = document.getElementById('imageModal');
     imageModal.addEventListener('show.bs.modal', event => {
       const button = event.relatedTarget;
@@ -143,6 +223,38 @@
       const img = imageModal.querySelector('#modalImg');
       img.src = src;
     });
-  </script>
+  
+    // Crear nueva tarjeta al enviar formulario
+    const createForm = document.getElementById('createForm');
+    const gallery = document.querySelector('main .row');
+  
+    createForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const url = document.getElementById('imgUrl').value;
+      const title = document.getElementById('imgTitle').value;
+      const desc = document.getElementById('imgDesc').value;
+  
+      const col = document.createElement('div');
+      col.className = 'col-sm-6 col-md-4 col-lg-3';
+      col.setAttribute('data-aos', 'fade-up');
+  
+      col.innerHTML = `
+        <div class="card">
+          <img src="${url}" class="card-img-top" alt="${title}">
+          <div class="card-body">
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text">${desc}</p>
+            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="${url}">Ver</button>
+          </div>
+        </div>
+      `;
+      gallery.prepend(col); // añade al principio
+  
+      // Cerrar modal y reiniciar formulario
+      bootstrap.Modal.getInstance(document.getElementById('createModal')).hide();
+      createForm.reset();
+      AOS.refresh(); // para que AOS detecte la nueva tarjeta
+    });
+  </script>  
 </body>
 </html>
