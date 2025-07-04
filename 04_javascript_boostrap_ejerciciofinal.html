@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Servidores y Dispositivos en Red</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <!-- Título de la aplicación -->
+            <h1 class="display-4">Control de Servidores y Dispositivos en Red</h1>
+            <p class="lead">Administra servidores y dispositivos en la red, asigna IPs y gestiona su estado.</p>
+        </header>
+
+        <!-- Sección para agregar servidores -->
+        <section id="agregar-servidor" class="mb-5">
+            <div class="card p-4 shadow">
+                <h2>Agregar Nuevo Servidor</h2>
+                <div class="form-group">
+                    <label for="nombre-servidor">Nombre del servidor:</label>
+                    <input type="text" id="nombre-servidor" class="form-control" placeholder="Introduce el nombre del servidor">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo-servidor">Tipo de servidor:</label>
+                    <select id="tipo-servidor" class="form-control">
+                        <option value="" disabled selected>Selecciona el tipo</option>
+                        <option value="Web">Web</option>
+                        <option value="Base de Datos">Base de Datos</option>
+                        <option value="Proxy">Proxy</option>
+                    </select>
+                </div>
+
+                <!-- Botón para agregar el servidor -->
+                <button class="btn btn-primary btn-block" onclick="agregarServidor()">Agregar servidor</button>
+            </div>
+        </section>
+
+        <!-- Lista de servidores -->
+        <section class="mb-5">
+            <div class="card p-4 shadow">
+                <h3>Lista de Servidores</h3>
+                <ul id="lista-servidores" class="list-group">
+                    <!-- Los servidores se agregarán dinámicamente aquí -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Sección de administración de dispositivos en red -->
+        <section id="administrar-dispositivo" class="mb-5">
+            <div class="card p-4 shadow">
+                <h2>Administración de Dispositivos en Red</h2>
+
+                <div class="form-group">
+                    <label for="nombre-dispositivo">Nombre del dispositivo:</label>
+                    <input type="text" id="nombre-dispositivo" class="form-control" placeholder="Introduce el nombre del dispositivo">
+                </div>
+
+                <div class="form-group">
+                    <label for="ip-dispositivo">Dirección IP:</label>
+                    <input type="text" id="ip-dispositivo" class="form-control" placeholder="Introduce la dirección IP">
+                </div>
+
+                <!-- Botón para agregar el dispositivo -->
+                <button class="btn btn-secondary btn-block" onclick="agregarDispositivo()">Agregar dispositivo</button>
+            </div>
+        </section>
+
+        <!-- Lista de dispositivos -->
+        <section class="mb-5">
+            <div class="card p-4 shadow">
+                <h3>Lista de Dispositivos en Red</h3>
+                <ul id="lista-dispositivos" class="list-group">
+                    <!-- Los dispositivos se agregarán dinámicamente aquí -->
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Array para almacenar los servidores
+        let servidores = [];
+        
+        // Array para almacenar los dispositivos de red
+        let dispositivos = [];
+
+        // Función agregarServidor: Agrega un nuevo servidor a la lista de servidores
+        function agregarServidor() {
+            // Obtener el nombre y tipo del servidor desde los campos de texto y selección
+            const nombreServidor = document.getElementById("nombre-servidor").value;
+            const tipoServidor = document.getElementById("tipo-servidor").value;
+
+            // Validación: Verificar que ambos campos no estén vacíos
+            if (nombreServidor && tipoServidor) {
+                // Crear el objeto servidor
+                let servidor = { nombre: nombreServidor, tipo: tipoServidor };
+
+                // Agregar el servidor al array "servidores"
+                servidores.push(servidor);
+
+                // Llamar a la función para actualizar la lista visualmente
+                mostrarServidores();
+
+                // Limpiar los campos después de agregar
+                document.getElementById("nombre-servidor").value = "";
+                document.getElementById("tipo-servidor").value = "";
+            } else {
+                // Mostrar una alerta si algún campo está vacío
+                alert("Por favor, completa todos los campos.");
+            }
+        }
+
+        // Función mostrarServidores: Muestra la lista de servidores en pantalla
+        function mostrarServidores() {
+            // Obtener el elemento HTML donde se mostrará la lista de servidores
+            const lista = document.getElementById("lista-servidores");
+
+            // Limpiar el contenido de la lista antes de actualizarla
+            lista.innerHTML = "";
+
+            // Recorrer el array "servidores" y agregar cada servidor a la lista
+            servidores.forEach((servidor) => {
+                let servidorItem = `<li class="list-group-item">${servidor.nombre} - Tipo: ${servidor.tipo}</li>`;
+                lista.innerHTML += servidorItem;
+            });
+        }
+
+        // Función agregarDispositivo: Agrega un nuevo dispositivo de red
+        function agregarDispositivo() {
+            // Obtener el nombre y la IP del dispositivo
+            const nombreDispositivo = document.getElementById("nombre-dispositivo").value;
+            const ipDispositivo = document.getElementById("ip-dispositivo").value;
+
+            // Validación: Verificar que ambos campos no estén vacíos
+            if (nombreDispositivo && ipDispositivo) {
+                // Crear el objeto dispositivo con estado "Activo"
+                let dispositivo = { nombre: nombreDispositivo, ip: ipDispositivo, estado: "Activo" };
+
+                // Agregar el dispositivo al array "dispositivos"
+                dispositivos.push(dispositivo);
+
+                // Llamar a la función para actualizar la lista visualmente
+                mostrarDispositivos();
+
+                // Limpiar los campos después de agregar
+                document.getElementById("nombre-dispositivo").value = "";
+                document.getElementById("ip-dispositivo").value = "";
+            } else {
+                // Mostrar una alerta si algún campo está vacío
+                alert("Por favor, completa todos los campos.");
+            }
+        }
+
+        // Función mostrarDispositivos: Muestra la lista de dispositivos en pantalla
+        function mostrarDispositivos() {
+            // Obtener el elemento HTML donde se mostrará la lista de dispositivos
+            const lista = document.getElementById("lista-dispositivos");
+
+            // Limpiar el contenido de la lista antes de actualizarla
+            lista.innerHTML = "";
+
+            // Recorrer el array "dispositivos" y agregar cada dispositivo a la lista
+            dispositivos.forEach((dispositivo, index) => {
+                // Crear el elemento de lista con botón para cambiar estado
+                let dispositivoItem = `
+                    <li class="list-group-item">
+                        ${dispositivo.nombre} - IP: ${dispositivo.ip} - Estado: ${dispositivo.estado}
+                        <button class="btn btn-sm btn-warning float-right" onclick="cambiarEstadoDispositivo(${index})">Cambiar estado</button>
+                    </li>`;
+                lista.innerHTML += dispositivoItem;
+            });
+        }
+
+        // Función cambiarEstadoDispositivo: Cambia el estado del dispositivo entre Activo/Inactivo
+        function cambiarEstadoDispositivo(index) {
+            // Cambiar el estado del dispositivo según el estado actual
+            if (dispositivos[index].estado === "Activo") {
+                dispositivos[index].estado = "Inactivo";
+            } else {
+                dispositivos[index].estado = "Activo";
+            }
+            // Actualizar la lista visualmente
+            mostrarDispositivos();
+        }
+    </script>
+</body>
+</html>
