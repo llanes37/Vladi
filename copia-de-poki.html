@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poki Clone con Video Preview</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    body { background: linear-gradient(to right, #00e4d0, #5983e8); font-family: sans-serif; }
+    .game-card { position: relative; overflow: hidden; border-radius: 16px; margin-bottom:1rem; }
+    .game-card img, .game-card video { display: block; width: 100%; height: auto; }
+    .game-card video { position: absolute; top: 0; left: 0; opacity: 0; transition: opacity .3s; }
+    .game-card:hover video { opacity: 1; }
+    .game-title { position: absolute; bottom: 0; width:100%; background:rgba(0,0,0,0.6); color:#fff; text-align:center; padding:.5rem; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-light bg-white sticky-top shadow-sm">
+    <a class="navbar-brand px-4" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Poki_logo_2021.svg/512px-Poki_logo_2021.svg.png" height="40" alt="Poki"></a>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row gx-3 gy-4">
+      <!-- Card 1 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay="100">
+        <div class="game-card">
+          <img src="https://i.ytimg.com/vi/oqIsCK2jyRE/maxresdefault.jpg" alt="Subway Surfers">
+          <video src="https://videos.pexels.com/video-files/856925/856925-hd_1920_1080_25fps.mp4" muted loop preload="metadata"></video>
+          <div class="game-title">Subway Surfers</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay="200">
+        <div class="game-card">
+          <img src="https://i.ytimg.com/vi/oqIsCK2jyRE/maxresdefault.jpg" alt="Stickman Hook">
+          <video src="https://playbite.com/videos/StickmanHook_preview.mp4" muted loop preload="metadata"></video>
+          <div class="game-title">Stickman Hook</div>
+        </div>
+      </div>
+      <!-- Más ejemplos -->
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay="300">
+        <div class="game-card">
+          <img src="https://i.ytimg.com/vi/oqIsCK2jyRE/maxresdefault.jpg" alt="Penalty Shooters">
+          <video src="https://playbite.com/videos/PenaltyShooters_preview.mp4" muted loop preload="metadata"></video>
+          <div class="game-title">Penalty Shooters</div>
+        </div>
+      </div>
+      <!-- Agrega más tarjetas aquí -->
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true, duration: 800 });
+  </script>
+</body>
+</html>

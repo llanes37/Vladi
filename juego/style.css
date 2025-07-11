@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+canvas {
+    image-rendering: pixelated;
+    width: 100vmin;
+    height: 100vmin;
+}
