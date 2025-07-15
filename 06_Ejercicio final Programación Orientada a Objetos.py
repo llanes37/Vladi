@@ -1,5 +1,5 @@
 # *******************************************************************************************
-# * PRÁCTICA COMPLETA: GESTIÓN DE LA CANTINA PARA LAS FIESTAS DE SAN JUAN BOSCO             *
+# * PRÁCTICA COMPLETA: GESTIÓN DE UN BAR PARA LAS FIESTAS DE UN PUEBLO            *
 # * OBJETIVO: Crear un sistema que modele la gestión de una cantina usando POO en Python.   *
 # *******************************************************************************************
 
@@ -44,7 +44,7 @@ class Producto:
 # * SECCIÓN 2: CLASE PRINCIPAL
 # -------------------------------------------------------------------------------------------
 
-class Cantina:
+class RESTAURANTE:
     """
     Clase que representa la administración de una cantina.
     """
@@ -116,37 +116,7 @@ class ProductoEspecial(Producto):
 # * SECCIÓN 4: ENCAPSULACIÓN Y VALIDACIÓN
 # -------------------------------------------------------------------------------------------
 
-class AdministradorCantina:
-    """
-    Clase para gestionar los datos privados de los administradores de la cantina.
-    """
-    def __init__(self, nombre, clave):
-        """
-        Constructor de la clase AdministradorCantina.
-        :param nombre: Nombre del administrador (str).
-        :param clave: Clave de acceso (str).
-        """
-        self.__nombre = nombre  # Atributo privado.
-        self.__clave = clave  # Atributo privado.
 
-    def verificar_clave(self, clave):
-        """
-        Método para verificar si una clave es correcta.
-        :param clave: Clave a verificar (str).
-        :return: True si la clave coincide, False en caso contrario.
-        """
-        return self.__clave == clave
-
-    def cambiar_clave(self, nueva_clave):
-        """
-        Método para cambiar la clave privada si cumple los requisitos.
-        :param nueva_clave: Nueva clave (str).
-        """
-        if len(nueva_clave) >= 8:
-            self.__clave = nueva_clave
-            print("Clave cambiada con éxito.")
-        else:
-            print("La nueva clave debe tener al menos 8 caracteres.")
 
 
 # -------------------------------------------------------------------------------------------
@@ -154,16 +124,18 @@ class AdministradorCantina:
 # -------------------------------------------------------------------------------------------
 
 # Crear una instancia de Cantina.
-cantina = Cantina("Cantina San Juan Bosco")
+BURGERkING = RESTAURANTE("bURGERkiNG")
 
 # Agregar productos normales.
-producto1 = Producto("Refresco", 1.5, 100)
-producto2 = Producto("Empanada", 2.0, 50)
-cantina.agregar_producto(producto1)
-cantina.agregar_producto(producto2)
-
+WHOPPER = Producto("WHOPPER", 2, 100)
+PATATAS = Producto("PATATAS", 1, 50)
+PATATAS.vender(10)  # Vender 10 unidades de PATATAS.
+WHOPPER.vender(5)  # Vender 5 unidades de WHOPPER
+BURGERkING.agregar_producto(WHOPPER)
+BURGERkING.agregar_producto(PATATAS)
+BURGERkING.mostrar_productos()
 # Agregar productos especiales.
-producto_especial = ProductoEspecial("Pastel Especial", 10.0, 10, "2025-01-30")
+""" producto_especial = ProductoEspecial("Pastel Especial", 10.0, 10, "2025-01-30")
 cantina.agregar_producto(producto_especial)
 
 # Mostrar todos los productos.
@@ -176,15 +148,6 @@ cantina.realizar_venta("Refresco", 2)
 
 # Mostrar productos después de la venta.
 print("\nLista de productos después de la venta:")
-cantina.mostrar_productos()
+cantina.mostrar_productos() """
 
-# Gestionar administrador.
-admin = AdministradorCantina("María", "clave123")
-print("\nVerificando clave del administrador:")
-print(admin.verificar_clave("clave123"))  # Debería devolver True.
 
-print("\nCambiando clave del administrador...")
-admin.cambiar_clave("nuevaClaveSegura")
-
-print("\nVerificando con la nueva clave:")
-print(admin.verificar_clave("nuevaClaveSegura"))  # Debería devolver True.
