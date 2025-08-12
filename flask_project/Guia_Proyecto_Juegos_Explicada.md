@@ -201,6 +201,85 @@ Las plantillas son los archivos HTML que se muestran a los usuarios. Crea las pl
 ```
 
 ---
+## 6. Añadir un Buscador de Juegos
+
+Vamos a mejorar nuestra aplicación incorporando un **buscador** que permita filtrar juegos por **nombre**, **género** o **plataforma**. Esto hará que el usuario pueda encontrar rápidamente un juego específico.
+
+### Modificar la Ruta Principal
+
+Edita la función `index` en `my_app/routes.py` para que acepte un parámetro de búsqueda:
+
+```python
+from flask import render_template, redirect, url_for, request
+from my_app.models import db, Juego
+from my_app.forms import JuegoForm
+
+@app.route('/')
+def index():
+    # Obtener el texto de búsqueda desde la URL
+    q = request.args.get('q', '').strip()
+
+    if q:
+        # Filtrar por nombre, género o plataforma que contengan el texto
+        juegos = Juego.query.filter(
+            (Juego.nombre.ilike(f'%{q}%')) |
+            (Juego.genero.ilike(f'%{q}%')) |
+            (Juego.plataforma.ilike(f'%{q}%'))
+        ).all()
+    else:
+        # Si no hay búsqueda, mostrar todos los juegos
+        juegos = Juego.query.all()
+
+    return render_template('index.html', juegos=juegos, q=q)
+```
+
+> **Nota:** El método `.ilike()` hace que la búsqueda no distinga entre mayúsculas y minúsculas.
+
+---
+
+### Actualizar la Plantilla `index.html`
+
+Agrega un formulario en la parte superior para que el usuario pueda escribir su búsqueda:
+
+```html
+<h1>Mis Juegos</h1>
+
+<form method="GET" action="{{ url_for('index') }}">
+    <input type="text" name="q" value="{{ q or '' }}" placeholder="Buscar juego..." />
+    <button type="submit">Buscar</button>
+</form>
+
+<a href="{{ url_for('nuevo_juego') }}">Añadir Juego</a>
+<ul>
+    {% for juego in juegos %}
+    <li>
+        <strong>{{ juego.nombre }}</strong> ({{ juego.genero }}) - {{ juego.plataforma }}
+        <a href="{{ url_for('editar_juego', id=juego.id) }}">Editar</a>
+        <form action="{{ url_for('eliminar_juego', id=juego.id) }}" method="post" style="display:inline;">
+            <button type="submit">Eliminar</button>
+        </form>
+    </li>
+    {% else %}
+    <li>No se encontraron juegos.</li>
+    {% endfor %}
+</ul>
+```
+
+---
+
+### Cómo Funciona
+
+1. El usuario escribe un término en el cuadro de búsqueda y envía el formulario.
+2. Flask recibe el parámetro `q` en la URL (`/?q=texto`).
+3. La consulta filtra los juegos por nombre, género o plataforma que contengan ese texto.
+4. Se muestran solo los juegos coincidentes o un mensaje si no hay resultados.
+
+---
+
+🔹 **Reto extra**:
+
+* Añadir **paginación** para no mostrar todos los resultados de golpe.
+* Resaltar el término buscado en la lista.
 
 ## 5. Próximos Pasos
 
