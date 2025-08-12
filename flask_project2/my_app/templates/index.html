@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Juegos</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h1 class="mb-4">🎮 Mis Juegos</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    <a href="{{ url_for('nuevo_juego') }}" class="btn btn-primary mb-3">➕ Añadir Juego</a>
+
+    <ul class="list-group">
+        {% for juego in juegos %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="me-auto">
+                <h5 class="mb-1">{{ juego.nombre }}</h5>
+                <p class="mb-1 text-muted">{{ juego.genero }} - {{ juego.plataforma }}</p>
+                {% if juego.descripcion %}
+                <p class="mb-0"><em>{{ juego.descripcion }}</em></p>
+                {% endif %}
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <a href="{{ url_for('editar_juego', id=juego.id) }}" class="btn btn-sm btn-outline-secondary">✏️ Editar</a>
+                <button 
+                    type="button" 
+                    class="btn btn-sm btn-outline-danger btn-eliminar" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmModal"
+                    data-juego="{{ juego.nombre }}"
+                    data-action="{{ url_for('eliminar_juego', id=juego.id) }}">
+                    🗑️ Eliminar
+                </button>
+            </div>
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted">No hay juegos aún.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-danger text-white rounded-top-4">
+        <h5 class="modal-title" id="confirmModalLabel">⚠ Confirmar Eliminación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body fs-5">
+        ¿Seguro que quieres eliminar <strong id="juegoNombre"></strong>?<br>
+        <span class="text-muted">Esta acción no se puede deshacer.</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+        <form id="formEliminar" method="post">
+            <button type="submit" class="btn btn-danger rounded-pill">Sí, eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script para pasar datos al modal -->
+<script>
+document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const juego = this.getAttribute('data-juego');
+        const action = this.getAttribute('data-action');
+
+        document.getElementById('juegoNombre').textContent = juego;
+        document.getElementById('formEliminar').setAttribute('action', action);
+    });
+});
+</script>
+
+</body>
+</html>
