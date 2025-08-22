@@ -9,6 +9,13 @@
 </head>
 <body class="bg-light">
 
+
+<form class="d-flex w-80 m-2" role="search">
+  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
+  
 <div class="container mt-5">
     <h1 class="mb-4">🎮 Mis Juegos</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
