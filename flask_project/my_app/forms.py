@@ -3,10 +3,10 @@ from wtforms import StringField, TextAreaField, SubmitField, PasswordField, Subm
 from wtforms.validators import DataRequired, DataRequired, Length, EqualTo
 
 class JuegoForm(FlaskForm):
-    nombre = StringField('Nombre', validators=[DataRequired()])
+    nombre = StringField('Nombre', validators=[DataRequired(), Length(min=3, max=20)])
     genero = StringField('Género', validators=[DataRequired()])
     plataforma = StringField('Plataforma', validators=[DataRequired()])
-    descripcion = TextAreaField('Descripción')
+    descripcion = TextAreaField('Descripción', validators=[DataRequired()])
     submit = SubmitField('Guardar')
 
 class RegistroForm(FlaskForm):

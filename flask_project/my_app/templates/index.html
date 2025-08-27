@@ -10,32 +10,103 @@
 
 <body class="bg-light">
 
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Icono / Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                🎮 Mis Juegos
+            </a>
+
+            <!-- Botón colapsable en móvil -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Buscador (centrado) -->
+                <form class="d-flex mx-auto" method="GET" action="{{ url_for('index') }}">
+                    <input class="form-control me-2" type="search" name="q" value="{{ q or '' }}" placeholder="Buscar juego...">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+
+                <!-- Si el usuario no ha iniciado sesión -->
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary ms-3">Inicio de sesión</a>
+                {% else %}
+                    <!-- Avatar con inicial -->
+                    <div class="d-flex align-items-center ms-3">
+                        <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center" 
+                            style="width: 40px; height: 40px; font-weight: bold;">
+                            {{ current_user.username[0]|upper }}
+                        </div>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-light ms-3">Salir</a>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h1 class="mb-4">🎮 Mis Juegos</h1>
 
+        <!-- Botón para abrir modal con iframe -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#nuevoJuegoModal">
+            ➕ Añadir Juego
+        </button>
 
-        <form method="GET" action="{{ url_for('index') }}">
-            <input type="text" name="q" value="{{ q or '' }}" placeholder="Buscar juego..." />
-            <button type="submit">Buscar</button>
-        </form>
+        <!-- Modal: Nuevo/Editar Juego -->
+        <div class="modal fade" id="nuevoJuegoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content shadow rounded-3">
+            <div class="modal-body p-4">
 
-        <a href="{{ url_for('nuevo_juego') }}">Añadir Juego</a>
-        <ul>
-            {% for juego in juegos %}
-            <li>
-                <strong>{{ juego.nombre }}</strong> ({{ juego.genero }}) - {{ juego.plataforma }}
-                <a href="{{ url_for('editar_juego', id=juego.id) }}">Editar</a>
-                <form action="{{ url_for('eliminar_juego', id=juego.id) }}" method="post" style="display:inline;">
-                    <button type="submit">Eliminar</button>
+                <!-- Formulario -->
+                <h1 class="mb-4">
+                {% if form.nombre.data %}✏️ Editar{% else %}➕ Nuevo{% endif %} Juego
+                </h1>
+
+                <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.nombre.label(class="form-label") }}
+                    {{ form.nombre(class="form-control", placeholder="Ej: The Legend of Zelda") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.genero.label(class="form-label") }}
+                    {{ form.genero(class="form-control", placeholder="Ej: Aventura") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.plataforma.label(class="form-label") }}
+                    {{ form.plataforma(class="form-control", placeholder="Ej: Nintendo Switch") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.descripcion.label(class="form-label") }}
+                    {{ form.descripcion(class="form-control", rows="3", placeholder="Escribe una breve descripción...") }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <!-- Este botón ahora cierra la modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    ⬅️ Volver
+                    </button>
+
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
                 </form>
-            </li>
-            {% else %}
-            <li>No se encontraron juegos.</li>
-            {% endfor %}
-        </ul>
-    
-        <a href="{{ url_for('nuevo_juego') }}" class="btn btn-primary mb-3">➕ Añadir Juego</a>
-    
+
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+
         <ul class="list-group">
             {% for juego in juegos %}
             <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -48,10 +119,35 @@
                 </div>
                 <div class="d-flex flex-column gap-2">
                     <a href="{{ url_for('editar_juego', id=juego.id) }}" class="btn btn-sm btn-outline-secondary">✏️ Editar</a>
-                    <form action="{{ url_for('eliminar_juego', id=juego.id) }}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Eliminar</button>
-                    </form>
+
+                    <!-- Botón que abre el modal -->
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ juego.id }}">
+                        🗑️ Eliminar
+                    </button>
+
+                    <!-- Modal de confirmación de eliminación -->
+                    <div class="modal fade" id="confirmDeleteModal{{ juego.id }}" tabindex="-1" aria-labelledby="confirmDeleteLabel{{ juego.id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteLabel{{ juego.id }}">Confirmar eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que quieres eliminar <strong>{{ juego.nombre }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <!-- Formulario dentro del modal -->
+                                    <form action="{{ url_for('eliminar_juego', id=juego.id) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </li>
             {% else %}
             <li class="list-group-item text-muted">No hay juegos aún.</li>
