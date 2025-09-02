@@ -35,20 +35,16 @@ def register_routes(app):
 
         return render_template('index.html', juegos=juegos, q=q, form=form)
 
-
-    @app.route('/editar/<int:id>', methods=['GET', 'POST'])
+    @app.route('/editar/<int:id>', methods=['POST'])
     def editar_juego(id):
         juego = Juego.query.get_or_404(id)
-        form = JuegoForm(obj=juego)
-        if form.validate_on_submit():
-            juego.nombre = form.nombre.data
-            juego.genero = form.genero.data
-            juego.plataforma = form.plataforma.data
-            juego.descripcion = form.descripcion.data
-            db.session.commit()
-            flash('Juego actualizado con éxito', 'success')
-            return redirect(url_for('index'))
-        return render_template('editar_juego.html', form=form, juego=juego)
+        juego.nombre = request.form['nombre']
+        juego.genero = request.form['genero']
+        juego.plataforma = request.form['plataforma']
+        juego.descripcion = request.form['descripcion']
+        db.session.commit()
+        flash('Juego actualizado con éxito', 'success')
+        return redirect(url_for('index'))
 
 
     @app.route('/eliminar/<int:id>', methods=['POST'])

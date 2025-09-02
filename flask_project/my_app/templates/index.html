@@ -118,7 +118,12 @@
                     {% endif %}
                 </div>
                 <div class="d-flex flex-column gap-2">
-                    <a href="{{ url_for('editar_juego', id=juego.id) }}" class="btn btn-sm btn-outline-secondary">✏️ Editar</a>
+                    <!-- Botón que abre el modal de edición -->
+                    <button type="button" class="btn btn-sm btn-outline-secondary" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editarJuegoModal{{ juego.id }}">
+                        ✏️ Editar
+                    </button>
 
                     <!-- Botón que abre el modal -->
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ juego.id }}">
@@ -146,6 +151,49 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal de edición -->
+                    <div class="modal fade" id="editarJuegoModal{{ juego.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content shadow rounded-3">
+                        <div class="modal-body p-4">
+
+                            <h1 class="mb-4">✏️ Editar Juego</h1>
+
+                            <form method="POST" action="{{ url_for('editar_juego', id=juego.id) }}">
+                            {{ form.hidden_tag() }}
+
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" value="{{ juego.nombre }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Género</label>
+                                <input type="text" name="genero" class="form-control" value="{{ juego.genero }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Plataforma</label>
+                                <input type="text" name="plataforma" class="form-control" value="{{ juego.plataforma }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                <textarea name="descripcion" class="form-control" rows="3">{{ juego.descripcion }}</textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">⬅️ Volver</button>
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                            </form>
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
                 </div>
 
             </li>
