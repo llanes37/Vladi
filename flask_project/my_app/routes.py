@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, request, flash
-from my_app.models import db, Juego, Usuario
-from my_app.forms import JuegoForm, RegistroForm, LoginForm
-from flask_login import login_user, logout_user, login_required
+from my_app.models import db, Juego, Usuario, Reseña
+from my_app.forms import JuegoForm, RegistroForm, LoginForm, EditarPerfilForm, ReseñaForm
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def register_routes(app):
@@ -18,7 +18,15 @@ def register_routes(app):
         else:
             juegos = Juego.query.all()
 
+        # --- Lógica para asociar reseñas a juegos ---
+        reseñas_dict = {}
+        for juego in juegos:
+            reseña = Reseña.query.filter_by(juego_id=juego.id).order_by(Reseña.id.desc()).first()
+            reseñas_dict[juego.id] = reseña
+        # --------------------------------------------
+
         form = JuegoForm()
+        editar_perfil_form = EditarPerfilForm(obj=current_user)
 
         # Handle new game submission from modal
         if form.validate_on_submit():
@@ -33,18 +41,32 @@ def register_routes(app):
             flash('Juego agregado con éxito', 'success')
             return redirect(url_for('index'))
 
-        return render_template('index.html', juegos=juegos, q=q, form=form)
+        return render_template(
+            'index.html',
+            juegos=juegos,
+            q=q,
+            form=form,
+            editar_perfil_form=editar_perfil_form,
+            reseñas_dict=reseñas_dict  # <--- Añade esto
+        )
 
     @app.route('/editar/<int:id>', methods=['POST'])
     def editar_juego(id):
-        juego = Juego.query.get_or_404(id)
-        juego.nombre = request.form['nombre']
-        juego.genero = request.form['genero']
-        juego.plataforma = request.form['plataforma']
-        juego.descripcion = request.form['descripcion']
-        db.session.commit()
-        flash('Juego actualizado con éxito', 'success')
+        juego = Juego.query.get_or_404(id)   # obtenemos el juego de la DB
+        form = JuegoForm()
+
+        if form.validate_on_submit():
+            # actualizamos en vez de crear uno nuevo
+            juego.nombre = form.nombre.data
+            juego.genero = form.genero.data
+            juego.plataforma = form.plataforma.data
+            juego.descripcion = form.descripcion.data
+
+            db.session.commit()
+            flash('Juego actualizado con éxito', 'success')
+
         return redirect(url_for('index'))
+
 
 
     @app.route('/eliminar/<int:id>', methods=['POST'])
@@ -92,3 +114,32 @@ def register_routes(app):
     @login_required
     def perfil():
         return render_template('perfil.html')
+
+    @app.route('/editar_perfil', methods=['POST'])
+    @login_required
+    def editar_perfil():
+        form = EditarPerfilForm()
+        if form.validate_on_submit():
+            current_user.nombre_completo = form.nombre_completo.data
+            current_user.edad = form.edad.data
+            db.session.commit()
+            flash('Perfil actualizado con éxito', 'success')
+        else:
+            flash('Error al actualizar el perfil', 'danger')
+        return redirect(url_for('index'))
+
+    @app.route('/añadir_reseña/<int:juego_id>', methods=['POST'])
+    def añadir_reseña(juego_id):
+        form = ReseñaForm()
+        if form.validate_on_submit():
+            reseña = Reseña(
+                calificacion=form.calificacion.data,
+                texto_reseña=form.texto_reseña.data,
+                juego_id=juego_id
+            )
+            db.session.add(reseña)
+            db.session.commit()
+            flash('Reseña añadida con éxito', 'success')
+        else:
+            flash('Error al añadir la reseña', 'danger')
+        return redirect(url_for('index'))

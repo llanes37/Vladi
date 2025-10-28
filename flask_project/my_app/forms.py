@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, DataRequired, Length, EqualTo
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, DataRequired, Length, EqualTo, Optional, NumberRange
 
 class JuegoForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired(), Length(min=3, max=20)])
@@ -19,3 +19,13 @@ class LoginForm(FlaskForm):
     username = StringField('Usuario', validators=[DataRequired()])
     password = PasswordField('Contraseña', validators=[DataRequired()])
     submit = SubmitField('Iniciar Sesión')
+
+class EditarPerfilForm(FlaskForm):
+    nombre_completo = StringField('Nombre completo', validators=[Optional(), Length(max=120)])
+    edad = IntegerField('Edad', validators=[Optional(), NumberRange(min=1, max=120)])
+    submit = SubmitField('Guardar cambios')
+
+class ReseñaForm(FlaskForm):
+    calificacion = IntegerField('Calificación', validators=[DataRequired(), NumberRange(min=1, max=10)])
+    texto_reseña = TextAreaField('Reseña', validators=[DataRequired(), Length(min=3, max=500)])
+    submit = SubmitField('Añadir reseña')
