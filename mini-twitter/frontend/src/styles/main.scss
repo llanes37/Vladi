@@ -1,0 +1,115 @@
+/**
+ * Estilos globales de la aplicación
+ */
+
+// Variables CSS personalizadas
+:root {
+  --twitter-blue: #1DA1F2;
+  --twitter-dark: #15202B;
+  --border-color: #E1E8ED;
+}
+
+// Reset básico y estilos globales
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Scrollbar personalizada
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+// Tema oscuro scrollbar
+.v-theme--dark {
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Links
+a {
+  color: var(--twitter-blue);
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Utilidades
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Animaciones
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-y-enter-active,
+.slide-y-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-y-enter-from,
+.slide-y-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+// Card de post hover
+.post-card {
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+}
+
+.v-theme--dark .post-card:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+// Emoji picker
+.emoji-picker {
+  position: absolute;
+  z-index: 100;
+}

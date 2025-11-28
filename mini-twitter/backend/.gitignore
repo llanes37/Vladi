@@ -1,0 +1,29 @@
+# Dependencias
+node_modules/
+
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos subidos (en producción usar storage externo)
+uploads/*
+!uploads/.gitkeep
+
+# Cobertura de tests
+coverage/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
